@@ -1,4 +1,5 @@
 import "reflect-metadata";
+import { env } from './env';
 import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@as-integrations/express5";
 import express from "express";
@@ -25,7 +26,22 @@ async function bootstrap() {
     emitSchemaFile: "./schema.graphql",
   });
 
-  const server = new ApolloServer({ schema });
+  const server = new ApolloServer({ 
+    schema,
+    formatError: (formattedError, error) => {
+      if (
+        formattedError.message.includes('Prisma') ||
+        formattedError.message.includes('Unique constraint failed') ||
+        formattedError.message.includes('invocation in')
+      ) {
+        return {
+          ...formattedError,
+          message: 'Erro interno no servidor ou conflito de dados.',
+        };
+      }
+      return formattedError;
+    },
+  });
 
   await server.start();
 
@@ -37,7 +53,7 @@ async function bootstrap() {
     }),
   );
 
-  const PORT = process.env.PORT || 4000;
+  const PORT = env.PORT || 4000;
 
   app.listen(PORT, () => {
     console.log(`🚀 Server ready at: http://localhost:${PORT}/graphql`);

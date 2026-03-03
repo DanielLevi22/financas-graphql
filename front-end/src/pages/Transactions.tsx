@@ -28,6 +28,7 @@ import { TRANSACTIONS_QUERY, CATEGORIES_QUERY } from '../graphql/queries';
 import { DELETE_TRANSACTION_MUTATION } from '../graphql/mutations';
 import type { Transaction, Category } from '../types/graphql';
 import { getCategoryIcon, getCategoryColor } from '../lib/constants';
+import { formatCurrency, formatDate } from '../utils/formatters';
 
 interface TransactionsData {
   transactions: Transaction[];
@@ -57,24 +58,6 @@ export function Transactions() {
 
   const categories = categoriesData?.categories || [];
   const transactions = transactionsData?.transactions || [];
-
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('pt-BR', {
-      style: 'currency',
-      currency: 'BRL',
-    }).format(Math.abs(value));
-  };
-
-  const formatDate = (dateString: string) => {
-    if (!dateString) return '-';
-    
-    try {
-        const date = new Date(dateString);
-        return new Intl.DateTimeFormat('pt-BR').format(date);
-    } catch {
-        return dateString;
-    }
-  };
 
   const handleDelete = async (transaction: Transaction) => {
     if (window.confirm(`Tem certeza que deseja excluir a transação "${transaction.description}"?`)) {

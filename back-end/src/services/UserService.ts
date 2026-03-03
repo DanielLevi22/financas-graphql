@@ -20,6 +20,11 @@ export class UserService {
   }
 
   async register(input: RegisterInput) {
+    const existingUser = await this.getUserByEmail(input.email);
+    if (existingUser) {
+      throw new Error('Email já cadastrado.');
+    }
+
     const hashedPassword = await bcrypt.hash(input.password, 10);
     
     return this.prisma.user.create({

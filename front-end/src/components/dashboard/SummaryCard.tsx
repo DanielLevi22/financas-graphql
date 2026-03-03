@@ -1,5 +1,6 @@
 import { type LucideIcon } from 'lucide-react';
 import { cn } from '../../lib/utils';
+import { formatCurrency } from '../../utils/formatters';
 
 interface SummaryCardProps {
   title: string;
@@ -12,10 +13,7 @@ interface SummaryCardProps {
 export function SummaryCard({ title, amount, icon: Icon, variant = 'default', trend }: SummaryCardProps) {
   const isTotal = variant === 'total';
   
-  const formattedAmount = new Intl.NumberFormat('pt-BR', {
-    style: 'currency',
-    currency: 'BRL',
-  }).format(amount);
+  const formattedAmount = formatCurrency(amount);
 
   return (
     <div className={cn(

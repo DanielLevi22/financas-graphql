@@ -9,8 +9,9 @@ import { RegisterInput } from '../../dtos/inputs/RegisterInput';
 import { UpdateUserInput } from '../../dtos/inputs/UpdateUserInput';
 import { UserService } from '../../services/UserService';
 import type { Context } from '../../context';
+import { env } from '../../env';
 
-const APP_SECRET = process.env.JWT_SECRET || 'secret';
+const APP_SECRET = env.JWT_SECRET;
 
 @Resolver(() => User)
 export class UserResolver {

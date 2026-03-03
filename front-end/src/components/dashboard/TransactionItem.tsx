@@ -1,6 +1,7 @@
 import { type LucideIcon, ArrowUpCircle, ArrowDownCircle, Trash2, Pencil } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { Tag } from '../ui/tag';
+import { formatCurrency } from '../../utils/formatters';
 
 interface TransactionItemProps {
   title: string;
@@ -28,10 +29,7 @@ export function TransactionItem({
   onDelete
 }: TransactionItemProps) {
   
-  const formattedAmount = new Intl.NumberFormat('pt-BR', {
-    style: 'currency',
-    currency: 'BRL',
-  }).format(Math.abs(amount));
+  const formattedAmount = formatCurrency(amount);
 
   return (
     <div className="flex items-center justify-between py-4 border-b border-gray-100 last:border-0 hover:bg-gray-50/50 transition-colors px-2 -mx-2 rounded-lg group">

@@ -1,4 +1,5 @@
 import { Tag } from '../ui/tag';
+import { formatCurrency } from '../../utils/formatters';
 
 interface CategoryItemProps {
   name: string;
@@ -8,10 +9,7 @@ interface CategoryItemProps {
 }
 
 export function CategoryItem({ name, count, amount, color }: CategoryItemProps) {
-  const formattedAmount = new Intl.NumberFormat('pt-BR', {
-    style: 'currency',
-    currency: 'BRL',
-  }).format(amount);
+  const formattedAmount = formatCurrency(amount);
 
   return (
     <div className="flex items-center justify-between py-3 border-b border-gray-100 last:border-0 hover:bg-gray-50/50 transition-colors px-2 -mx-2 rounded-lg">
